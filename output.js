@@ -1,3 +1,6 @@
+//Tue Sep 24 2024 03:24:48 GMT+0000 (Coordinated Universal Time)
+//Base:https://github.com/echo094/decode-js
+//Modify:https://github.com/smallfawn/decode_action
 //Tue Sep 24 2024 03:20:57 GMT+0000 (Coordinated Universal Time)
 //Base:https://github.com/echo094/decode-js
 //Modify:https://github.com/smallfawn/decode_action
@@ -23,7 +26,7 @@ var _0x2a0e2e = function () {
     return _0x1123c8();
   });
 _0x1578b2();
-const $ = new Env("点点兼职"),
+const $ = new Env("\u70B9\u70B9\u517C\u804C"),
   axios = require("axios");
 let request = require("request");
 var _0x306d64 = {
@@ -47,12 +50,12 @@ let ddjzhd = ($.isNode() ? process.env.ddjzhd : $.getdata("ddjzhd")) || "",
     if (!(await Envs())) {
       return;
     } else {
-      log("\n\n=============================================    \n脚本执行 - 北京时间(UTC+8)：" + new Date(new Date().getTime() + new Date().getTimezoneOffset() * 60 * 1000 + 28800000).toLocaleString() + " \n=============================================\n");
-      log("\n=================== 共找到 " + ddjzhdArr.length + " 个账号 ===================");
+      log("\n\n=============================================    \n\u811A\u672C\u6267\u884C - \u5317\u4EAC\u65F6\u95F4(UTC+8)\uFF1A" + new Date(new Date().getTime() + new Date().getTimezoneOffset() * 60 * 1000 + 28800000).toLocaleString() + " \n=============================================\n");
+      log("\n=================== \u5171\u627E\u5230 " + ddjzhdArr.length + " \u4E2A\u8D26\u53F7 ===================");
       await checkin66();
       for (let _0x14ce14 = 0; _0x14ce14 < ddjzhdArr.length; _0x14ce14++) {
         let _0xef82b8 = _0x14ce14 + 1;
-        log("\n==== 开始【第 " + _0xef82b8 + " 个账号】====\n");
+        log("\n==== \u5F00\u59CB\u3010\u7B2C " + _0xef82b8 + " \u4E2A\u8D26\u53F7\u3011====\n");
         ddjzhd = ddjzhdArr[_0x14ce14].split("#");
         await login1();
       }
@@ -73,7 +76,7 @@ async function checkin66() {
     _0x573729.headers["User-Agent"] = "PostmanRuntime-ApipostRuntime/1.1.0";
     _0x573729.headers.Connection = "keep-alive";
     var _0x96bf9 = _0x573729;
-    debug && (log("\n【debug】=============== 这是  请求 url ==============="), log(JSON.stringify(_0x96bf9)));
+    debug && (log("\n\u3010debug\u3011=============== \u8FD9\u662F  \u8BF7\u6C42 url ==============="), log(JSON.stringify(_0x96bf9)));
     axios.request(_0x96bf9).then(async function (_0x5d61de) {
       try {
         data = _0x5d61de.data;
@@ -81,7 +84,7 @@ async function checkin66() {
         idArray = idd.split(",");
         randomId = idArray[Math.floor(Math.random() * idArray.length)];
       } catch (_0x1fda97) {
-        log("异常：" + data + "，原因：" + data.message);
+        log("\u5F02\u5E38\uFF1A" + data + "\uFF0C\u539F\u56E0\uFF1A" + data.message);
       }
     }).catch(function (_0x346a83) {
       console.error(_0x346a83);
@@ -116,14 +119,14 @@ async function login() {
     axios.request(_0x557435).then(async function (_0x24c600) {
       try {
         data = _0x24c600.data;
-        debug && (log("\n【debug】===============这是返回data=============="), log(JSON.stringify(data)));
+        debug && (log("\n\u3010debug\u3011===============\u8FD9\u662F\u8FD4\u56DEdata=============="), log(JSON.stringify(data)));
         log(randomId);
         data.code == 1 ? (log(data.msg), await checkin1(), await checkin2(), await checkin5(), await checkin6()) : (log(data.msg), await checkin66(), await login1());
       } catch (_0x445ba8) {
-        log("异常：" + data + "，原因：" + data.message);
+        log("\u5F02\u5E38\uFF1A" + data + "\uFF0C\u539F\u56E0\uFF1A" + data.message);
       }
     }).catch(function (_0x468cc8) {
-      console.error("请求异常：" + _0x468cc8);
+      console.error("\u8BF7\u6C42\u5F02\u5E38\uFF1A" + _0x468cc8);
     }).then(() => {
       _0xd35b4a();
     });
@@ -154,14 +157,14 @@ async function checkin1() {
     _0x26f581.params.c = "qd";
     _0x26f581.params.m = "sign_in";
     var _0x4bfd21 = _0x26f581;
-    debug && (log("\n【debug】=============== 这是  请求 url ==============="), log(JSON.stringify(_0x4bfd21)));
+    debug && (log("\n\u3010debug\u3011=============== \u8FD9\u662F  \u8BF7\u6C42 url ==============="), log(JSON.stringify(_0x4bfd21)));
     axios.request(_0x4bfd21).then(async function (_0x58447e) {
       try {
         data = _0x58447e.data;
-        debug && (log("\n\n【debug】===============这是 返回data=============="), log(JSON.stringify(_0x58447e.data)));
+        debug && (log("\n\n\u3010debug\u3011===============\u8FD9\u662F \u8FD4\u56DEdata=============="), log(JSON.stringify(_0x58447e.data)));
         log(data.msg);
       } catch (_0x58367b) {
-        log("异常：" + data + "，原因：" + data.message);
+        log("\u5F02\u5E38\uFF1A" + data + "\uFF0C\u539F\u56E0\uFF1A" + data.message);
       }
     }).catch(function (_0x4861a8) {
       console.error(_0x4861a8);
@@ -194,7 +197,7 @@ async function checkin2() {
     _0x6a251c.params.app = "Yhxcx";
     _0x6a251c.params.c = "qd";
     _0x6a251c.params.m = "sign_in";
-    debug && (log("\n【debug】=============== 这是  请求 url ==============="), log(JSON.stringify(_0x6a251c)));
+    debug && (log("\n\u3010debug\u3011=============== \u8FD9\u662F  \u8BF7\u6C42 url ==============="), log(JSON.stringify(_0x6a251c)));
     axios.request(_0x6a251c).then(async function (_0x3a6a0f) {
       try {
         data = _0x3a6a0f.data;
@@ -206,10 +209,10 @@ async function checkin2() {
           log(data.msg);
         }
       } catch (_0x1a4d16) {
-        log("异常：" + _0x1a4d16);
+        log("\u5F02\u5E38\uFF1A" + _0x1a4d16);
       }
     }).catch(function (_0x12de53) {
-      console.error("请求异常：" + _0x12de53);
+      console.error("\u8BF7\u6C42\u5F02\u5E38\uFF1A" + _0x12de53);
     }).then(() => {
       _0xf72a77();
     });
@@ -238,17 +241,17 @@ async function checkin3() {
     _0x22691b.params.s = "Yhxcx";
     _0x22691b.params.c = "home";
     _0x22691b.params.m = "fb_detail";
-    debug && (log("\n【debug】=============== 这是请求url ==============="), log(JSON.stringify(_0x22691b)));
+    debug && (log("\n\u3010debug\u3011=============== \u8FD9\u662F\u8BF7\u6C42url ==============="), log(JSON.stringify(_0x22691b)));
     axios.request(_0x22691b).then(async function (_0x13a835) {
       try {
         data = _0x13a835.data;
-        debug && (log("\n【debug】===============这是返回data=============="), log(JSON.stringify(data)));
+        debug && (log("\n\u3010debug\u3011===============\u8FD9\u662F\u8FD4\u56DEdata=============="), log(JSON.stringify(data)));
         log(data.msg);
       } catch (_0x5cb7af) {
-        log("异常：" + _0x5cb7af);
+        log("\u5F02\u5E38\uFF1A" + _0x5cb7af);
       }
     }).catch(function (_0x5f0815) {
-      console.error("请求异常：" + _0x5f0815);
+      console.error("\u8BF7\u6C42\u5F02\u5E38\uFF1A" + _0x5f0815);
     }).then(() => {
       _0x23716d();
     });
@@ -278,16 +281,16 @@ async function checkin4() {
     _0x3bcf73.params.app = "Yhxcx";
     _0x3bcf73.params.c = "qd";
     _0x3bcf73.params.m = "sign_in";
-    debug && (log("\n【debug】=============== 这是请求url ==============="), log(JSON.stringify(_0x3bcf73)));
+    debug && (log("\n\u3010debug\u3011=============== \u8FD9\u662F\u8BF7\u6C42url ==============="), log(JSON.stringify(_0x3bcf73)));
     axios.request(_0x3bcf73).then(async function (_0x497a29) {
       try {
         data = _0x497a29.data;
         log(data.msg);
       } catch (_0x17a410) {
-        log("异常：" + _0x17a410);
+        log("\u5F02\u5E38\uFF1A" + _0x17a410);
       }
     }).catch(function (_0xded04d) {
-      console.error("请求异常：" + _0xded04d);
+      console.error("\u8BF7\u6C42\u5F02\u5E38\uFF1A" + _0xded04d);
     }).then(() => {
       _0x5c200d();
     });
@@ -320,12 +323,12 @@ async function checkin5() {
     axios.request(_0x3b5046).then(async function (_0xe53bce) {
       try {
         data = _0xe53bce.data;
-        log("累计邀请人数:" + data.data.yqr);
-        log("累计收益:" + data.data.ljsy);
-        log("已提现金额:" + data.data.ytx);
-        log("可提现金额:" + data.data.dtx);
+        log("\u7D2F\u8BA1\u9080\u8BF7\u4EBA\u6570:" + data.data.yqr);
+        log("\u7D2F\u8BA1\u6536\u76CA:" + data.data.ljsy);
+        log("\u5DF2\u63D0\u73B0\u91D1\u989D:" + data.data.ytx);
+        log("\u53EF\u63D0\u73B0\u91D1\u989D:" + data.data.dtx);
       } catch (_0x3f172b) {
-        log("异常：" + data + "，原因：" + data.message);
+        log("\u5F02\u5E38\uFF1A" + data + "\uFF0C\u539F\u56E0\uFF1A" + data.message);
       }
     }).catch(function (_0x30a6e9) {
       console.error(_0x30a6e9);
@@ -358,17 +361,17 @@ async function checkin6() {
     _0x249a27.params.app = "yhxcx";
     _0x249a27.params.c = "home";
     _0x249a27.params.m = "account";
-    debug && (log("\n【debug】=============== 这是请求url ==============="), log(JSON.stringify(_0x249a27)));
+    debug && (log("\n\u3010debug\u3011=============== \u8FD9\u662F\u8BF7\u6C42url ==============="), log(JSON.stringify(_0x249a27)));
     axios.request(_0x249a27).then(async function (_0x204720) {
       try {
         data = _0x204720.data;
-        debug && (log("\n【debug】===============这是返回data=============="), log(JSON.stringify(data)));
-        log("当前手机号:" + data.data.fillin.phone);
+        debug && (log("\n\u3010debug\u3011===============\u8FD9\u662F\u8FD4\u56DEdata=============="), log(JSON.stringify(data)));
+        log("\u5F53\u524D\u624B\u673A\u53F7:" + data.data.fillin.phone);
       } catch (_0x102843) {
-        log("异常：" + _0x102843);
+        log("\u5F02\u5E38\uFF1A" + _0x102843);
       }
     }).catch(function (_0x3c381b) {
-      console.error("请求异常：" + _0x3c381b);
+      console.error("\u8BF7\u6C42\u5F02\u5E38\uFF1A" + _0x3c381b);
     }).then(() => {
       _0x143fc6();
     });
@@ -398,17 +401,17 @@ async function login1() {
     _0x257a1c.params.app = "yhxcx";
     _0x257a1c.params.c = "tg";
     _0x257a1c.params.m = "invite";
-    debug && (log("\n【debug】=============== 这是请求url ==============="), log(JSON.stringify(_0x257a1c)));
+    debug && (log("\n\u3010debug\u3011=============== \u8FD9\u662F\u8BF7\u6C42url ==============="), log(JSON.stringify(_0x257a1c)));
     axios.request(_0x257a1c).then(async function (_0x2a318d) {
       try {
         data = _0x2a318d.data;
-        debug && (log("\n【debug】===============这是返回data=============="), log(JSON.stringify(data)));
+        debug && (log("\n\u3010debug\u3011===============\u8FD9\u662F\u8FD4\u56DEdata=============="), log(JSON.stringify(data)));
         await login();
       } catch (_0x4fc941) {
-        log("异常：" + _0x4fc941);
+        log("\u5F02\u5E38\uFF1A" + _0x4fc941);
       }
     }).catch(function (_0x185919) {
-      console.error("请求异常：" + _0x185919);
+      console.error("\u8BF7\u6C42\u5F02\u5E38\uFF1A" + _0x185919);
     }).then(() => {
       _0x314c5f();
     });
@@ -430,7 +433,7 @@ async function Envs() {
       }
     }
   } else {
-    log("\n 【" + $.name + "】：未填写变量 ddjzhd");
+    log("\n \u3010" + $.name + "\u3011\uFF1A\u672A\u586B\u5199\u53D8\u91CF ddjzhd");
     return;
   }
   return true;
@@ -505,7 +508,7 @@ function Env(_0x230f03, _0x18bb90) {
       this.logSeparator = "\n";
       this.startTime = new Date().getTime();
       Object.assign(this, _0xf6c42f);
-      this.log("", "🔔" + this.name + ", 开始!");
+      this.log("", "\uD83D\uDD14" + this.name + ", \u5F00\u59CB!");
     }
     isNode() {
       return "undefined" != typeof module && !!module.exports;
@@ -854,7 +857,7 @@ function Env(_0x230f03, _0x18bb90) {
         }
       };
       if (this.isMute || (this.isSurge() || this.isLoon() ? $notification.post(_0x2b2b2b, _0x47dc67, _0xfe05d9, _0x31f7ad(_0x369b76)) : this.isQuanX() && $notify(_0x2b2b2b, _0x47dc67, _0xfe05d9, _0x31f7ad(_0x369b76))), !this.isMuteLog) {
-        let _0x3707b6 = ["", "==============📣系统通知📣=============="];
+        let _0x3707b6 = ["", "==============\uD83D\uDCE3\u7CFB\u7EDF\u901A\u77E5\uD83D\uDCE3=============="];
         _0x3707b6.push(_0x2b2b2b);
         _0x47dc67 && _0x3707b6.push(_0x47dc67);
         _0xfe05d9 && _0x3707b6.push(_0xfe05d9);
@@ -868,7 +871,7 @@ function Env(_0x230f03, _0x18bb90) {
     }
     logErr(_0x2dfaea, _0x2dbdfa) {
       const _0x5b6ce6 = !this.isSurge() && !this.isQuanX() && !this.isLoon();
-      _0x5b6ce6 ? this.log("", "❗️" + this.name + ", 错误!", _0x2dfaea.stack) : this.log("", "❗️" + this.name + ", 错误!", _0x2dfaea);
+      _0x5b6ce6 ? this.log("", "\u2757\uFE0F" + this.name + ", \u9519\u8BEF!", _0x2dfaea.stack) : this.log("", "\u2757\uFE0F" + this.name + ", \u9519\u8BEF!", _0x2dfaea);
     }
     wait(_0xff0f6a) {
       return new Promise(_0x3eb563 => setTimeout(_0x3eb563, _0xff0f6a));
@@ -876,7 +879,7 @@ function Env(_0x230f03, _0x18bb90) {
     done(_0x3c21d3 = {}) {
       const _0x2fe098 = new Date().getTime(),
         _0x57e755 = (_0x2fe098 - this.startTime) / 1000;
-      this.log("", "🔔" + this.name + ", 结束! 🕛 " + _0x57e755 + " 秒");
+      this.log("", "\uD83D\uDD14" + this.name + ", \u7ED3\u675F! \uD83D\uDD5B " + _0x57e755 + " \u79D2");
       this.log();
       (this.isSurge() || this.isQuanX() || this.isLoon()) && $done(_0x3c21d3);
     }
