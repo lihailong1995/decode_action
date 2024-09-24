@@ -1,237 +1,204 @@
-#2024-09-24 03:44:55
-import os
+#2024-09-24 03:59:26
+
+import base64
+import json
 import requests
-import time
 import random
-import re
-from urllib.parse import urlparse,parse_qs,quote
-from functools import wraps
-import threading
-from concurrent.futures import ThreadPoolExecutor,as_completed
+import time
 import hashlib
-if not ua:
- print("为什么不在脚本里面填ua!!!为什么??!!\n"*100)
- exit()
-lock=threading.Lock()
-def printf(m):
- with lock:
-  print(m)
-def version():
- print(requests.get("https://gitee.com/HuaJiB/yuanshen34/raw/master/pubilc.txt").text)
-def get_bizlist():
- global bizlist
- try:
-  bizlist=requests.get("https://gitee.com/HuaJiB/yuanshen34/raw/master/bizlist.txt").text.replace('"','').replace(' ','').split(",")
-  print(f"🎉️从云服务器加载检测文章配置成功")
- except:
-  print("⛔️从云服务器加载检测文章配置失败")
-  bizlist=[]
-def get_setting():
- global list
- list='1,2,3,31,125,126,127,128'
- list=list.split(",")
- list=[int(i)for i in list]
-def retry(exceptions,tries=5,delay=2,backoff=2):
- def decorator(func):
-  @wraps(func)
-  def wrapper(*args,**kwargs):
-   _tries,_delay=tries,delay
-   while _tries>1:
-    try:
-     return func(*args,**kwargs)
-    except exceptions as e:
-     print(f"发生错误:[{e}], Retrying in {_delay} ...")
-     time.sleep(_delay)
-     _tries-=1
-     _delay*=backoff
-   try:
-    return func(*args,**kwargs)
-   except:
-    print("重试了还失败。重开得了")
-    exit()
-  return wrapper
- return decorator
-class yuanshen():
- def __init__(self,cookie,num)->None:
-  self.num=num
-  self.cookie=cookie
-  self.num_list=list
-  if "=" in self.cookie:
-   printf("ck格式错误 呆瓜，PHPSESSID=不要给我放进去，ok？")
-   exit()
-  self.biz_=bizlist
- @retry(exceptions=Exception,tries=5,delay=2,backoff=2)
- def getmain(self):
-  headers={"Host":"h5.zxds25snvvw.cn","Connection":"keep-alive","Upgrade-Insecure-Requests":"1","User-Agent":ua,"Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/wxpic,image/tpg,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7","X-Requested-With":"com.tencent.mm","Accept-Encoding":"gzip, deflate","Accept-Language":"zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7","Cookie":f"PHPSESSID={self.cookie}"}
-  url="http://h5.zxds25snvvw.cn/pipa_read?upuid=2220314"
-  r=requests.get(url,headers=headers,allow_redirects=False)
-  redirect_url=r.headers.get('Location')
-  self.mainurl=urlparse(redirect_url).netloc
-  printf(f"🎉️第[{self.num}]个账号获取到主域名[{self.mainurl}]")
- def readnum(self):
-  try:
-   url=f"http://{self.mainurl}/pipa_read/"
-   r=requests.get(url,headers=self.h3).text
-   match=re.search(r'今日已读(\d+)篇',r)
-   if match:
-    printf(f"第[{self.num}]个账号获取已读文章数成功")
-    return int(match.group(1))
-   else:
-    printf(f"第[{self.num}]个账号获取已读文章数失败")
-    return None
-  except Exception as e:
-   printf(f"第[{self.num}]个账号获取已读文章数失败{e}")
-   return None
- def tuisong(self):
-  url=f"https://wxpusher.zjiecode.com/api/send/message/?appToken={appToken}&topicId={topicIds}&content=检测文章%0A请在20秒内完成验证!%0A%3Cbody+onload%3D%22window.location.href%3D%27{quote(self.readurl)}%27%22%3E"
-  r=requests.get(url).json()
-  printf(f"🎉️第[{self.num}]个账号检测文章推送结果{r}")
- def getdoamin(self):
-  try:
-   url=f"http://{self.mainurl}/read_task/ggg3"
-   r=requests.get(url,headers=self.h).json()
-   kurl=r['jump'].replace('\\','')
-   j=urlparse(kurl)
-   fragment=kurl.split('#')[-1]
-   self.domain=j.netloc
-   match=re.search(r'iu=([^&]*)',fragment)
-   self.iu=match.group(1)if match else None
-   printf(f"🎉️第[{self.num}]个账号获取到阅读域名[{self.domain}][{self.iu}]")
-   h={"Host":self.domain,"Connection":"keep-alive","Upgrade-Insecure-Requests":"1","User-Agent":ua,"Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7","X-Requested-With":"com.tencent.mm","Accept-Encoding":"gzip, deflate","Accept-Language":"zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7"}
-   r=requests.get(kurl,headers=h).text
-   if "rd" not in kurl:
-    print("检测到接口链接发生变化，火速跑路，台子抓人了")
-    exit()
-   match=re.search(r"var url = '(.*)'",r)
-   if match:
-    self.canshu=match.group(1)
-    j=urlparse(self.canshu)
-    self.canshu_domain=j.netloc
-   else:
-    printf(f"第[{self.num}]个账号获取参数失败")
-  except Exception as e:
-   printf(f"第[{self.num}]个账号获取到阅读域名失败{e} 不会是封号了吧叼毛")
-   exit()
- def read(self):
-  num=self.readnum()+1
-  jkey=None
-  while True:
-   num+=1
-   r=random.random()
-   if jkey is None:
-    url=f"{self.canshu}?iu={self.iu}&type=7&type=7&pageshow&r={r}"
-   else:
-    url=f"{self.canshu}?iu={self.iu}&type=7&type=7&pageshow&r={r}&jkey={jkey}"
-   r=requests.get(url,headers=self.h2).json()
-   try:
-    jkey,self.readurl=r['jkey'],r['url']
-    k=urlparse(self.readurl)
-    printf(f"✅️第[{self.num}]个账号获取文章成功[{self.readurl}]")
-    biz=parse_qs(k.query).get('__biz',[''])[0]if '__biz' in parse_qs(k.query)else ''
-    if biz not in self.biz_:
-     if num in self.num_list:
-      printf(f"第[{self.num}]个账号触发强检，推送ing...")
-      self.tuisong()
-      time.sleep(random.randint(20,30))
-     else:
-      time.sleep(random.randint(9,18))
+import string
+import threading
+import os
+
+class qqmc():
+    def __init__(self,token) -> None:
+        self.device = token.split('#')[0]
+        self.token = token.split('#')[1]
+        self.headers_g = {
+            "Authorization": self.token,
+            "X-Version-Code": "105",
+            "X-Platform": "android",
+            "X-System": "11",
+            "X-Brand": "Redmi",
+            "X-Device-ID": self.device,
+            "X-Client-Id": "com.yourong.app.qqmc",
+            "distributor-key": "qqmc",
+            "Host": "qqmc.huitui.pro",
+            "Connection": "Keep-Alive",
+            "Accept-Encoding": "gzip",
+            "User-Agent": "okhttp/4.9.3"
+        }
+        self.headers_p = {
+            "Authorization": self.token,
+            "X-Version-Code": "105",
+            "X-Platform": "android",
+            "X-System": "11",
+            "X-Brand": "Redmi",
+            "X-Device-ID": self.device,
+            "X-Client-Id": "com.yourong.app.qqmc",
+            "distributor-key": "qqmc",
+            "Content-Type": "application/json; charset=UTF-8",
+            "Host": "qqmc.huitui.pro",
+            "Connection": "Keep-Alive",
+            "Accept-Encoding": "gzip",
+            "User-Agent": "okhttp/4.9.3"
+        }
+
+    def get_nonce(self):
+        characters = string.ascii_lowercase + string.digits
+        self.nonce = ''
+        for _ in range(32):
+            self.nonce += random.choice(characters)
+    def get_md5(self,message):
+        md5 = hashlib.md5()
+        md5.update(message.encode('utf-8'))
+        return md5.hexdigest()
+
+    def tasks(self):
+        url = "http://qqmc.huitui.pro/tasks"
+        response = requests.get(url, headers=self.headers_g)
+        if response.json().get('code') == 200001:
+            print('获取任务列表成功')
+            self.task_list = {}
+            for tasks in response.json().get('data').get('tasks'):
+                if tasks.get('finished'):
+                    continue
+                if tasks.get('id') == 1 or tasks.get('id') == 2:
+                    self.task_list[tasks.get('name')] = tasks.get('id')
+        else:
+            print(f"获取任务失败：{response.json().get('message')}")
+    
+    def daily(self,k):
+        t = str(int(time.time()*1000))
+        self.get_nonce()
+        if self.task_list[k] == 1:
+            if len(self.device) <= 16:
+                message = f"{self.device}&{self.task_list[k]}&{t}&{self.nonce}&T50uedlIX0fsgr5i0cGQdriBjmSAiLqC&com.yourong.app.qqmc"
+            else:
+                message = f"{self.task_list[k]}&{t}&{self.nonce}&{self.device}&T50uedlIX0fsgr5i0cGQdriBjmSAiLqC&com.yourong.app.qqmc"
+        elif self.task_list[k] == 2:
+            if len(self.device) <= 16:
+                message = f"{self.device}&{t}&{self.task_list[k]}&{self.nonce}&T50uedlIX0fsgr5i0cGQdriBjmSAiLqC&com.yourong.app.qqmc"
+            else:
+                message = f"{t}&{self.task_list[k]}&{self.nonce}&{self.device}&T50uedlIX0fsgr5i0cGQdriBjmSAiLqC&com.yourong.app.qqmc"
+        # print(message)
+        md5 = self.get_md5(message)
+        url = "http://qqmc.huitui.pro/tasks/complete"
+        data = {
+            "sign": md5,
+            "id": self.task_list[k],
+            "nonce": self.nonce,
+            "timestamp": t
+        }
+        response = requests.post(url, headers=self.headers_p, json=data)
+        # print(response.json())
+        if response.json().get('code') == 200001:
+            print(f"[{k}]任务成功，获得金币：{response.json().get('data').get('reward')}")
+            time.sleep(random.randint(30,40))
+            self.daily(k)
+        else:
+            print(f"[{k}]任务失败：{response.json().get('message')}")
+            if "验签异常" in response.json().get('message'):
+                time.sleep(random.randint(30,40))
+                self.daily(k)
+    
+    def collect(self):
+        t = str(int(time.time()*1000-1))
+        self.get_nonce()
+        message = f"1&{t}&{self.nonce}&{self.device}&T50uedlIX0fsgr5i0cGQdriBjmSAiLqC&com.yourong.app.qqmc"
+        md5 = self.get_md5(message)
+        url = "http://qqmc.huitui.pro/lucky_cats/fast_collect"
+        data = {
+            "sign": md5,
+            "mode": 1,
+            "nonce": self.nonce,
+            "timestamp": t
+        }
+        response = requests.post(url, headers=self.headers_p, json=data)
+        if response.json().get('code') == 200001:
+            print("一键收取元宝成功")
+        else:
+            print(f"一键收取元宝失败：{response.json().get('message')}")
+            if "验签异常" in response.json().get('message'):
+                time.sleep(5)
+                self.collect()
+    
+    def bay_cat(self):
+        headers = {
+            "Authorization": self.token,
+            "X-Version-Code": "105",
+            "X-Platform": "android",
+            "X-System": "11",
+            "X-Brand": "Redmi",
+            "X-Device-ID": self.device,
+            "X-Client-Id": "com.yourong.app.qqmc",
+            "distributor-key": "qqmc",
+            "Content-Length": "0",
+            "Host": "qqmc.huitui.pro",
+            "Connection": "Keep-Alive",
+            "Accept-Encoding": "gzip",
+            "User-Agent": "okhttp/4.9.3"
+        }
+        url = "http://qqmc.huitui.pro/lucky_cats/purchase"
+        response = requests.post(url, headers=headers)
+        if response.json().get('code') == 200001:
+            print("购买喵喵成功")
+        else:
+            print(f"购买喵喵失败：{response.json().get('message')}")
+
+    
+    def cat_info(self):
+        url = "http://qqmc.huitui.pro/lucky_cats/info"
+        response = requests.get(url, headers=self.headers_g)
+        if response.json().get('code') == 200001:
+            self.jinbi = float(response.json().get('data').get('walletGold').get('balance'))
+            self.yuanbao = response.json().get('data').get('walletIngot').get('balance')
+        else:
+            print(f"获取信息失败：{response.json().get('message')}")
+            
+    def main(self):
+        self.tasks()
+        if self.task_list != {}:
+            print('==============开始任务：日常任务==============')
+            for k in self.task_list:
+                self.daily(k)
+        print('==============开始任务：收取元宝==============')
+        self.collect()
+        self.cat_info()
+        if self.jinbi > 3000:
+            print('==============开始任务：购买喵喵==============')
+            for i in range(int(self.jinbi/3000)):
+                self.bay_cat()
+                time.sleep(2)
+
+
+if __name__ in "__main__":
+    token = os.getenv('token_qqmc')
+    if not token:
+        print('请检查环境变量token_qqmc')
+        exit()
+    tokens = token.split('@')
+    print(f'共有{len(tokens)}个账号')
+    if thread_TF:
+        print('多线程已开启')
+        threads = []
+        for i,token in enumerate(tokens):
+            print(f'----------开始第{i+1}个账号----------')
+            main = qqmc(token)
+            thread = threading.Thread(target=main.main)
+            threads.append(thread)
+            thread.start()
+        for thread in threads:
+            thread.join()
     else:
-     printf(f"第[{self.num}]个账号遇到检测文章，推送ing...")
-     self.tuisong()
-     time.sleep(random.randint(20,30))
-    printf(f"🎉️第[{self.num}]个账号第[{num}]篇文章阅读成功！")
-    if 'error' in r['url']:
-     printf(f"⛔️第[{self.num}]个账号第[{num}]篇文章阅读失败！[{r['url']}]大概是本轮已经读完了，一小时再来运行俺")
-     break
-   except:
-    printf(f"⛔️第[{self.num}]个账号第[{num}]篇文章阅读失败！大概是本轮已经读完了，一小时再来运行俺")
-    try:
-     printf(f"⛔️第[{self.num}]个账号阅读失败原因：[{r['url']}]")
-     url=f"http://{self.domain}/read_task/finish?iu={self.iu}&type=7,7&upuid=&_t=799888"
-     r=requests.get(url,headers=self.h2)
-     if r.status_code==200:
-      printf(f"✅️第[{self.num}]个账号阅读任务完成！")
-     else:
-      printf(f"⛔️第[{self.num}]个账号阅读任务完成失败！")
-     break
-    except:
-     printf(f"⛔️第[{self.num}]个账号阅读任务完成失败！未知错误")
- @retry(exceptions=Exception,tries=5,delay=2,backoff=2)
- def userinfo(self):
-  h={"Host":f"{self.mainurl}","Connection":"keep-alive","Upgrade-Insecure-Requests":"1","User-Agent":ua,"Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/wxpic,image/tpg,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7","X-Requested-With":"com.tencent.mm","Referer":f"http://{self.mainurl}/pipa_read/user/","Accept-Encoding":"gzip, deflate","Accept-Language":"zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7","Cookie":f"PHPSESSID={self.cookie}"}
-  url=f"http://{self.mainurl}/withdrawal"
-  r=requests.get(url,headers=h).text
-  m=re.compile(r'<p class="withdraw-main-myinfo-money"><span>([\d\.]+)</span>')
-  match=m.search(r)
-  if match:
-   printf(f"💰️第[{self.num}]个账号当前余额：[{float(match.group(1))/100}]")
-   if float(match.group(1))/100>=withdrawal_money:
-    url=f"http://{self.mainurl}/withdrawal/submit_withdraw"
-    data={"channel":"wechat","money":f"{match.group(1)}"}
-    r=requests.post(url,data=data,headers=self.h_2).json()
-    if r['code']==0:
-     printf(f"🎉️第[{self.num}]个账号提现[{float(match.group(1))/100}]成功[{r['msg']}]！")
-    else:printf(f"⛔️第[{self.num}]个账号提现失败[{r['msg']}]！")
-   else:printf(f"⛔️第[{self.num}]个账号当前余额不足[{withdrawal_money}],无法提现")
-  else:printf(f"⛔️第[{self.num}]个账号获取余额失败！")
- def main(self):
-  self.getmain()
-  time.sleep(2)
-  self.h={"Host":f"{self.mainurl}","Connection":"keep-alive","Accept":"*/*","User-Agent":ua,"X-Requested-With":"XMLHttpRequest","Accept-Encoding":"gzip, deflate","Accept-Language":"zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7","Cookie":f"PHPSESSID={self.cookie}"}
-  self.h_2={"Host":f"{self.mainurl}","Connection":"keep-alive","Accept":"*/*","X-Requested-With":"XMLHttpRequest","User-Agent":ua,"Content-Type":"application/x-www-form-urlencoded","Origin":f"http://{self.mainurl}","Referer":f"http://{self.mainurl}/withdrawal","Accept-Encoding":"gzip, deflate","Accept-Language":"zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7","Cookie":f"PHPSESSID={self.cookie}"}
-  self.getdoamin()
-  time.sleep(2)
-  print("======================")
-  self.h2={"Host":self.canshu_domain,"Connection":"keep-alive","sec-ch-ua":"Chromium;v=118, Android","X-Requested-With":"XMLHttpRequest","sec-ch-ua-mobile":"?1","User-Agent":ua,"sec-ch-ua-platform":"Android","Accept":"*/*","Origin":f"http://{self.domain}","Sec-Fetch-Site":"cross-site","Sec-Fetch-Mode":"cors","Sec-Fetch-Dest":"empty","Referer":f"http://{self.domain}/","Accept-Encoding":"gzip, deflate, br","Accept-Language":"zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7"}
-  self.h3={"Host":f"{self.mainurl}","Connection":"keep-alive","Upgrade-Insecure-Requests":"1","User-Agent":ua,"Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/wxpic,image/tpg,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7","X-Requested-With":"com.tencent.mm","Referer":f"http://{self.mainurl}/pipa_read/user/","Accept-Encoding":"gzip, deflate","Accept-Language":"zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7","Cookie":f"PHPSESSID={self.cookie}"}
-  self.read()
-  time.sleep(2)
-  print("======================")
-  self.userinfo()
-  print("===================")
-if __name__=='__main__':
- appToken=""
- topicIds=""
- version()
- get_setting()
- get_bizlist()
- if not appToken:
-  appToken=os.getenv("yuanshen_apptoken")
-  if not appToken:
-   print("❌你还没有设置推送,请设置环境变量:yuanshen_apptoken")
-   exit()
- if not topicIds:
-  topicIds=os.getenv("yuanshen_topicid")
-  if not topicIds:
-   print("❌你还没有设置推送,请设置环境变量:yuanshen_topicid")
-   exit()
- cookie=''
- if not cookie:
-  cookie=os.getenv("yuanshen_yuer")
-  if not cookie:
-   print("请设置环境变量:yuanshen_yuer")
-   exit()
- cookies=cookie.split("@")
- print(f"一共获取到{len(cookies)}个账号")
- if max_threads!=1:
-  tasks=[]
-  num=1
-  with ThreadPoolExecutor(max_workers=max_threads)as executor:
-   futures=[]
-   for ck in cookies:
-    task=yuanshen(ck,num)
-    future=executor.submit(task.main)
-    futures.append(future)
-    time.sleep(10)
-    num+=1
-   results=[future.result()for future in as_completed(futures)]
-  print("所有任务执行完毕")
- else:
-  i=1
-  for cookie in cookies:
-   printf(f"\n--------开始第{i}个账号--------")
-   main=yuanshen(cookie,i)
-   main.main()
-   printf(f"--------第{i}个账号执行完毕--------")
-   time.sleep(20)
-   i+=1
+        for i,token in enumerate(tokens):
+            print('多线程已关闭')
+            print(f'----------开始第{i+1}个账号----------')
+            try:
+                main = qqmc(token)
+                main.main()
+            except:
+                pass
+            print(f'----------结束第{i+1}个账号----------')
+            time.sleep(random.randint(10,20))
+
