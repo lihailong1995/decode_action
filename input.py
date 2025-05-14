@@ -1,3 +1,9 @@
+# 入口 http://chweb.bksiyi.com/pages/signin/index.html?invite_code=253973&app_id=0
+# 邀请码 253973
+# 变量名 zz1_xjmc
+# 抓 Authorization X-Device-ID
+# 格式 备注#Authorization#X-Device-ID  多账号 & 分割
+# 定时 0 0 0,7 * * ?
 import base64
 import zlib
 
