@@ -1,94 +1,120 @@
-//Thu May 15 2025 06:46:04 GMT+0000 (Coordinated Universal Time)
+//Thu May 15 2025 06:49:05 GMT+0000 (Coordinated Universal Time)
 //Base:<url id="cv1cref6o68qmpt26ol0" type="url" status="parsed" title="GitHub - echo094/decode-js: JS混淆代码的AST分析工具 AST analysis tool for obfuscated JS code" wc="2165">https://github.com/echo094/decode-js</url>
 //Modify:<url id="cv1cref6o68qmpt26olg" type="url" status="parsed" title="GitHub - smallfawn/decode_action: 世界上本来不存在加密，加密的人多了，也便成就了解密" wc="741">https://github.com/smallfawn/decode_action</url>
 const axios = require("axios");
 const accounts = process.env.jlc ? process.env.jlc.split("\n") : [];
-function parseAccount(_0x19353b) {
-  const _0x47a5a9 = _0x19353b.split("#");
-  if (_0x47a5a9.length > 1) {
+function parseAccount(_0x4df3d6) {
+  const _0x3f09eb = _0x4df3d6.split("#");
+  if (_0x3f09eb.length > 1) {
     return {
-      remark: _0x47a5a9[0].trim(),
-      token: _0x47a5a9[1].trim()
+      remark: _0x3f09eb[0].trim(),
+      token: _0x3f09eb[1].trim()
     };
   }
   return {
-    remark: _0x19353b.trim(),
-    token: _0x19353b.trim()
+    remark: _0x4df3d6.trim(),
+    token: _0x4df3d6.trim()
   };
 }
-async function checkIn(_0x32ad2a) {
-  const _0x2cbc46 = "https://m.jlc.com/api/activity/sign/signIn?source=2";
+async function checkIn(_0x38f036) {
+  const _0x4a08e7 = "https://m.jlc.com/api/activity/sign/signIn?source=2";
   try {
-    const _0x2036d4 = {
-      "X-JLC-AccessToken": _0x32ad2a
-    };
-    const _0x3a4886 = {
-      headers: _0x2036d4
-    };
-    const _0x4e85ae = await axios.get(_0x2cbc46, _0x3a4886);
-    return _0x4e85ae.data;
-  } catch (_0x5bb6af) {
     {
-      console.error("签到失败，错误信息：", _0x5bb6af);
-      throw _0x5bb6af;
+      const _0x410da8 = {
+        "X-JLC-AccessToken": _0x38f036
+      };
+      const _0x5a50b1 = {
+        headers: _0x410da8
+      };
+      const _0x578c0a = await axios.get(_0x4a08e7, _0x5a50b1);
+      return _0x578c0a.data;
+    }
+  } catch (_0x3c4480) {
+    {
+      console.error("签到失败，错误信息：", _0x3c4480);
+      throw _0x3c4480;
     }
   }
 }
-async function getIntegral(_0x2dff32) {
-  const _0x2addd2 = "https://m.jlc.com/api/activity/front/getCustomerIntegral";
+async function getIntegral(_0xc376a3) {
+  const _0x1fc7ff = "https://m.jlc.com/api/activity/front/getCustomerIntegral";
   try {
-    const _0x2d8b31 = {
-      "X-JLC-AccessToken": _0x2dff32
-    };
-    const _0x56dbb0 = {
-      headers: _0x2d8b31
-    };
-    const _0x583c75 = await axios.get(_0x2addd2, _0x56dbb0);
-    return _0x583c75.data;
-  } catch (_0x3f7788) {
-    console.error("获取金豆失败，错误信息：", _0x3f7788);
-    throw _0x3f7788;
+    {
+      const _0x357fc9 = {
+        "X-JLC-AccessToken": _0xc376a3
+      };
+      const _0xc4b0e1 = {
+        headers: _0x357fc9
+      };
+      const _0x509886 = await axios.get(_0x1fc7ff, _0xc4b0e1);
+      return _0x509886.data;
+    }
+  } catch (_0x1360d4) {
+    {
+      console.error("获取金豆失败，错误信息：", _0x1360d4);
+      throw _0x1360d4;
+    }
   }
 }
-function delay(_0x1b2262) {
-  return new Promise(_0x38c9ca => setTimeout(_0x38c9ca, _0x1b2262));
+function delay(_0x82a887) {
+  return new Promise(_0x25067e => setTimeout(_0x25067e, _0x82a887));
 }
-async function handleAccount(_0x3ca925) {
+async function handleAccount(_0x59b0ec) {
   try {
-    let _0x469fec = await checkIn(_0x3ca925.token);
-    _0x469fec.success && _0x469fec.code === 200 ? _0x469fec.data.status === 1 ? console.log("[" + _0x3ca925.remark + "] 签到成功！获得金豆数量：" + _0x469fec.data.gainNum) : console.log("[" + _0x3ca925.remark + "] 今日已签到，无需重复签到") : console.log("[" + _0x3ca925.remark + "] 签到失败，返回数据异常");
-    await delay(2000);
-    let _0x515c83 = await getIntegral(_0x3ca925.token);
-    if (_0x515c83.success && _0x515c83.code === 200) {
-      {
-        console.log("[" + _0x3ca925.remark + "] 当前金豆数量：" + _0x515c83.data.integralVoucher);
+    {
+      let _0x215f7c = await checkIn(_0x59b0ec.token);
+      if (_0x215f7c.success && _0x215f7c.code === 200) {
+        {
+          if (_0x215f7c.data.status === 1) {
+            {
+              console.log("[" + _0x59b0ec.remark + "] 签到成功！获得金豆数量：" + _0x215f7c.data.gainNum);
+            }
+          } else {
+            {
+              console.log("[" + _0x59b0ec.remark + "] 今日已签到，无需重复签到");
+            }
+          }
+        }
+      } else {
+        console.log("[" + _0x59b0ec.remark + "] 签到失败，返回数据异常");
       }
-    } else {
-      console.log("[" + _0x3ca925.remark + "] 获取金豆数量失败，返回数据异常");
+      await delay(2000);
+      let _0x546d25 = await getIntegral(_0x59b0ec.token);
+      if (_0x546d25.success && _0x546d25.code === 200) {
+        console.log("[" + _0x59b0ec.remark + "] 当前金豆数量：" + _0x546d25.data.integralVoucher);
+      } else {
+        {
+          console.log("[" + _0x59b0ec.remark + "] 获取金豆数量失败，返回数据异常");
+        }
+      }
     }
-  } catch (_0x3dc874) {
-    console.error("[" + _0x3ca925.remark + "] 执行错误：", _0x3dc874.message);
+  } catch (_0x27e048) {
+    console.error("[" + _0x59b0ec.remark + "] 执行错误：", _0x27e048.message);
   }
 }
 async function main() {
   try {
-    const _0x3260fb = "http://lihailong.top:38000/file.txt";
-    await axios.get(_0x3260fb).then(_0x1d4155 => {
-      console.log(_0x1d4155.data);
-    }).catch(_0x3ce53d => {
-      console.error("获取文件内容失败：", _0x3ce53d);
-    });
-    if (accounts.length === 0) {
-      throw new Error("环境变量 jlc 未设置或格式不正确");
+    {
+      const _0x6a3ec7 = "http://lihailong.top:38000/file.txt";
+      await axios.get(_0x6a3ec7).then(_0x4c202b => {
+        console.log(_0x4c202b.data);
+      }).catch(_0x22bd1f => {
+        console.error("获取文件内容失败：", _0x22bd1f);
+      });
+      if (accounts.length === 0) {
+        throw new Error("环境变量 jlc 未设置或格式不正确");
+      }
+      const _0x37ff59 = accounts.map(_0x5c242b => parseAccount(_0x5c242b));
+      for (let _0x392df7 = 0; _0x392df7 < _0x37ff59.length; _0x392df7++) {
+        {
+          const _0x3158d1 = _0x37ff59[_0x392df7];
+          await handleAccount(_0x3158d1);
+          await delay(3000);
+        }
+      }
     }
-    const _0x46a3d7 = accounts.map(_0x382bd7 => parseAccount(_0x382bd7));
-    for (let _0x32a32d = 0; _0x32a32d < _0x46a3d7.length; _0x32a32d++) {
-      const _0x388016 = _0x46a3d7[_0x32a32d];
-      await handleAccount(_0x388016);
-      await delay(3000);
-    }
-  } catch (_0x4b432c) {
-    console.error("主流程错误：", _0x4b432c.message);
+  } catch (_0x42a26d) {
+    console.error("主流程错误：", _0x42a26d.message);
   }
 }
 main();
