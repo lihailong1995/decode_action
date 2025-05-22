@@ -1,6 +1,31 @@
-//Sun May 18 2025 14:57:43 GMT+0000 (Coordinated Universal Time)
+//Thu May 22 2025 14:49:56 GMT+0000 (Coordinated Universal Time)
 //Base:<url id="cv1cref6o68qmpt26ol0" type="url" status="parsed" title="GitHub - echo094/decode-js: JS混淆代码的AST分析工具 AST analysis tool for obfuscated JS code" wc="2165">https://github.com/echo094/decode-js</url>
 //Modify:<url id="cv1cref6o68qmpt26olg" type="url" status="parsed" title="GitHub - smallfawn/decode_action: 世界上本来不存在加密，加密的人多了，也便成就了解密" wc="741">https://github.com/smallfawn/decode_action</url>
+var r = ["url"];
+function i(_0x2179c8, _0x3c583c) {
+  if (null == _0x2179c8) {
+    return {};
+  }
+  var _0x153ba0;
+  var _0x571add = a(_0x2179c8, _0x3c583c);
+  if (Object.getOwnPropertySymbols) {
+    for (var _0x1686d5 = Object.getOwnPropertySymbols(_0x2179c8), _0x4ed9e5 = 0; _0x4ed9e5 < _0x1686d5.length; _0x4ed9e5++) {
+      _0x153ba0 = _0x1686d5[_0x4ed9e5];
+      0 <= _0x3c583c.indexOf(_0x153ba0) || Object.prototype.propertyIsEnumerable.call(_0x2179c8, _0x153ba0) && (_0x571add[_0x153ba0] = _0x2179c8[_0x153ba0]);
+    }
+  }
+  return _0x571add;
+}
+function a(_0x192b98, _0x2cecad) {
+  if (null == _0x192b98) {
+    return {};
+  }
+  for (var _0x163d28, _0x4ff424 = {}, _0x1836e9 = Object.keys(_0x192b98), _0x57a9f5 = 0; _0x57a9f5 < _0x1836e9.length; _0x57a9f5++) {
+    _0x163d28 = _0x1836e9[_0x57a9f5];
+    0 <= _0x2cecad.indexOf(_0x163d28) || (_0x4ff424[_0x163d28] = _0x192b98[_0x163d28]);
+  }
+  return _0x4ff424;
+}
 function u(_0x3a0724, _0x531bdf) {
   var _0xb7f831;
   var _0x5acc93;
